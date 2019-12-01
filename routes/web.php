@@ -22,7 +22,7 @@ Route::get('create', function () {
     
     $user = User::find(1);
 
-    $role = new Role(['name'=>'Administrator']);
+    $role = new Role(['name'=>'subscriber']);
 
     $user->roles()->save($role);
 
@@ -48,6 +48,50 @@ Route::get('read', function () {
 
 Route::get('update', function () {
 
+    $user = User::findOrFail(1);
 
+    if($user->has('roles')){
+
+        //checks if entry has xxx entry value
+        //normal if statement
+
+        foreach($user->roles as $role){
+
+            if($role->name == 'Administrator'){
+                //strtolower would be used if it was a variable
+                $role->name = 'subscriber';
+
+                $role->save();
+            }
+
+        }
+    }
     
+});
+
+Route::get('del', function(){
+
+    $user = User::findOrFail(1);
+
+    foreach($user->roles as $role){
+
+        $role->whereId(4)->delete();
+    }
+
+});
+
+/*
+Below we are attaching and creating a role to a user
+
+ATTACHES A ROLE TO THE USER, IF DOES NOT EXIST, IT WILL CREATE ANOTHER RECORD. EVEN IF THE MEMBER HAS IT.
+*/
+
+Route::get('attach', function(){
+
+    $user = User::findOrFail(1);
+
+    $user->roles()->attach(6);
+
+    //->detach(6) WILL REMOVE THE RELATIONSHIP
+
 });
