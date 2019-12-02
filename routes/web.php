@@ -95,3 +95,21 @@ Route::get('attach', function(){
     //->detach(6) WILL REMOVE THE RELATIONSHIP
 
 });
+
+
+Route::get('detach', function(){
+
+    $user = User::findOrFail(1);
+
+    $user->roles()->detach();
+
+});
+
+Route::get('sync', function () {
+
+    $user = User::findOrFail(1);
+
+    $user->roles()->sync([1,2]);
+    //MUST BE ARRAY
+    //Give an ID (or many IDs) & sync to the above user.
+});
